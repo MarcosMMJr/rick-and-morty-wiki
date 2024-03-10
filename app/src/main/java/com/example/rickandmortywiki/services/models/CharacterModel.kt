@@ -1,7 +1,8 @@
 package com.example.rickandmortywiki.services.models
 
+import com.example.rickandmortywiki.services.models.components.CharacterLocationModel
 import com.example.rickandmortywiki.services.models.components.EpisodeUrlModel
-import com.example.rickandmortywiki.services.models.components.OriginModel
+import com.example.rickandmortywiki.services.models.components.CharacterOriginModel
 
 data class CharacterModel(
     val id: Int,
@@ -10,8 +11,8 @@ data class CharacterModel(
     val species: String,
     val type: String,
     val gender: String,
-    val origin: OriginModel,
-    val location: LocationModel,
+    val origin: CharacterOriginModel,
+    val location: CharacterLocationModel,
     val image: String,
     val episode: List<EpisodeUrlModel>,
     val url: String,

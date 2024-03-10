@@ -1,6 +1,5 @@
 package com.example.rickandmortywiki.services.models.components
 
-data class OriginModel(
-    val name: String,
+data class CharacterUrlModel(
     val url: String
 )

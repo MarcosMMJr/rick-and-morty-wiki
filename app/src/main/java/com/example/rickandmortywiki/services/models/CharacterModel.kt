@@ -13,9 +13,9 @@ data class CharacterModel(
     val gender: String,
     val origin: CharacterOriginModel,
     val location: CharacterLocationModel,
-    val image: String,
+    val image: Int,
     val episode: List<EpisodeUrlModel>,
     val url: String,
     val created: String
-
+    //TODO: change image to String
 )

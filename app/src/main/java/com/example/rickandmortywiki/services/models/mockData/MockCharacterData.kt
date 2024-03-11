@@ -1,5 +1,6 @@
 package com.example.rickandmortywiki.services.models.mockData
 
+import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.services.models.CharacterModel
 import com.example.rickandmortywiki.services.models.components.CharacterLocationModel
 import com.example.rickandmortywiki.services.models.components.EpisodeUrlModel
@@ -23,7 +24,7 @@ object MockCharacterData {
                 name = "Citadel of Ricks",
                 url = "https://rickandmortyapi.com/api/location/3",
             ),
-            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            image = R.drawable.rick_sanchez,
             episode = listOf(
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/1"),
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/2"),
@@ -97,7 +98,7 @@ object MockCharacterData {
                 name = "Citadel of Ricks",
                 url = "https://rickandmortyapi.com/api/location/3"
             ),
-            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+            image = R.drawable.morty_smith,
             episode = listOf(
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/1"),
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/2"),
@@ -171,7 +172,7 @@ object MockCharacterData {
                 name = "Earth (Replacement Dimension)",
                 url = "https://rickandmortyapi.com/api/location/20"
             ),
-            image = "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
+            image = R.drawable.summer_smith,
             episode = listOf(
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/6"),
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/7"),
@@ -220,7 +221,7 @@ object MockCharacterData {
             created = "2017-11-04T19:09:56.428Z"
         ),
         //endregion
-        //region Personagem 4 - Beth Smith
+         //region Personagem 4 - Beth Smith
         CharacterModel(
             id = 4,
             name = "Beth Smith",
@@ -236,7 +237,7 @@ object MockCharacterData {
                 name = "Earth (Replacement Dimension)",
                 url = "https://rickandmortyapi.com/api/location/20"
             ),
-            image = "https://rickandmortyapi.com/api/character/avatar/4.jpeg",
+            image = R.drawable.beth_smith,
             episode = listOf(
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/6"),
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/7"),
@@ -301,7 +302,7 @@ object MockCharacterData {
                 name = "Earth (Replacement Dimension)",
                 url = "https://rickandmortyapi.com/api/location/20"
             ),
-            image = "https://rickandmortyapi.com/api/character/avatar/5.jpeg",
+            image = R.drawable.jerry_smith,
             episode = listOf(
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/6"),
                 EpisodeUrlModel("https://rickandmortyapi.com/api/episode/7"),

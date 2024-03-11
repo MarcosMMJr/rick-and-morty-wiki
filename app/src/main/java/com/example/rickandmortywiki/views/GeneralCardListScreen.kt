@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -28,12 +29,15 @@ fun GeneralCardListScreen(navController: NavController) {
             ) {
             Text(
                 text = "Tela de Listas",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
             )
 
             LazyColumn {
                 items(MockCharacterData.charactersList) { characterData ->
-                    CharacterCard(characterData = characterData)
+                    CharacterCard(characterData = characterData, onCharacterCardClick = {
+                        navController.navigate("DetailsScreen/${characterData.id}")
+                    })
                 }
             }
 

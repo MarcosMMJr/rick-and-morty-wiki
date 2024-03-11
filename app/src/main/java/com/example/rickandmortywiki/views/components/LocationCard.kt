@@ -1,6 +1,7 @@
 package com.example.rickandmortywiki.views.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,53 +37,58 @@ import com.example.rickandmortywiki.ui.theme.DarkBlue40
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 
 @Composable
-fun LocationCard(locationData: LocationModel) {
-    LocationCardStructure(locationData)
+fun LocationCard(locationData: LocationModel, onLocationCardClick: () -> Unit = {}) {
+    Box(
+        modifier = Modifier
+            .height(100.dp)
+            .width(400.dp)
+            .padding(8.dp)
+            .clickable {
+                onLocationCardClick()
+            },
+
+        ) {
+        LocationCardStructure(locationData)
+    }
 }
 
 
 @Composable
 fun LocationCardStructure(locationData: LocationModel) {
-    Box(
-        modifier = Modifier
-            .height(100.dp)
-            .width(400.dp)
-            .padding(8.dp),
 
-        ) {
-        Surface(
-            color = DarkBlue40,
-            modifier = Modifier.fillMaxSize(),
-            shape = MaterialTheme.shapes.medium,
-            shadowElevation = 8.dp
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+    Surface(
+        color = DarkBlue40,
+        modifier = Modifier.fillMaxSize(),
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 8.dp
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
 
 
-                Column(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .padding(start = 16.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
+            Column(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(start = 16.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
 
-                    Text(
-                        text = locationData.name,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+                Text(
+                    text = locationData.name,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
 
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-                    LocationSubtitleStructure("Type: ", locationData.type)
-                    LocationSubtitleStructure("Dimension: ", locationData.dimension)
+                LocationSubtitleStructure("Type: ", locationData.type)
+                LocationSubtitleStructure("Dimension: ", locationData.dimension)
 
-                }
             }
         }
     }
 }
+
 
 @Composable
 fun LocationSubtitleStructure(title: String, item: String) {
@@ -104,8 +110,6 @@ fun LocationSubtitleStructure(title: String, item: String) {
         )
     }
 }
-
-
 
 
 @Preview(showBackground = true)

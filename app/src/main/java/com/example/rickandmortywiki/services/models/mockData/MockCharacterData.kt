@@ -221,7 +221,7 @@ object MockCharacterData {
             created = "2017-11-04T19:09:56.428Z"
         ),
         //endregion
-         //region Personagem 4 - Beth Smith
+        //region Personagem 4 - Beth Smith
         CharacterModel(
             id = 4,
             name = "Beth Smith",
@@ -349,4 +349,8 @@ object MockCharacterData {
         )
         //endregion
     )
+
+    fun getCharacterById(characterId: Int?): CharacterModel {
+        return charactersList.first { it.id == characterId }
+    }
 }

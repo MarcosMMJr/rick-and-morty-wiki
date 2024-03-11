@@ -1,6 +1,7 @@
 package com.example.rickandmortywiki.views.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,46 +34,48 @@ import com.example.rickandmortywiki.ui.theme.DarkBlue40
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 
 @Composable
-fun CharacterCard(characterData: CharacterModel) {
-    CharacterCardStructure(characterData)
+fun CharacterCard(characterData: CharacterModel, onCharacterCardClick: () -> Unit = {}) {
+    Box(
+        modifier = Modifier
+            .height(150.dp)
+            .width(400.dp)
+            .padding(8.dp)
+            .clickable {
+                onCharacterCardClick()
+            },
+    ) {
+        CharacterCardStructure(characterData)
+    }
 }
 
 
 @Composable
 fun CharacterCardStructure(characterData: CharacterModel) {
-    Box(
-        modifier = Modifier
-            .height(150.dp)
-            .width(400.dp)
-            .padding(8.dp),
+    Surface(
+        color = DarkBlue40,
+        modifier = Modifier.fillMaxSize(),
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 4.dp
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
 
-        ) {
-        Surface(
-            color = DarkBlue40,
-            modifier = Modifier.fillMaxSize(),
-            shape = MaterialTheme.shapes.medium,
-            shadowElevation = 4.dp
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            CharacterImage(characterData.image)
 
-                CharacterImage(characterData.image)
-
-                Column(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .padding(start = 16.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = characterData.name,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    CharacterSubtitleStructure("Status: ", characterData.status)
-                    CharacterSubtitleStructure("Species: ", characterData.species)
-                    CharacterSubtitleStructure("Origin: ", characterData.origin.name)
-                }
+            Column(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(start = 16.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = characterData.name,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                CharacterSubtitleStructure("Status: ", characterData.status)
+                CharacterSubtitleStructure("Species: ", characterData.species)
+                CharacterSubtitleStructure("Origin: ", characterData.origin.name)
             }
         }
     }

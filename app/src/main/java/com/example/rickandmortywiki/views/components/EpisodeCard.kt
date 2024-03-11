@@ -1,6 +1,7 @@
 package com.example.rickandmortywiki.views.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,44 +36,48 @@ import com.example.rickandmortywiki.ui.theme.DarkBlue40
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 
 @Composable
-fun EpisodeCard(episodeData: EpisodeModel) {
-    EpisodeCardStructure(episodeData)
+fun EpisodeCard(episodeData: EpisodeModel, onEpisodeCardClick: () -> Unit = {}) {
+    Box(
+        modifier = Modifier
+            .height(100.dp)
+            .width(400.dp)
+            .padding(8.dp)
+            .clickable {
+                onEpisodeCardClick()
+            },
+
+        ) {
+        EpisodeCardStructure(episodeData)
+    }
 }
 
 
 @Composable
 fun EpisodeCardStructure(episodeData: EpisodeModel) {
-    Box(
-        modifier = Modifier
-            .height(100.dp)
-            .width(400.dp)
-            .padding(8.dp),
 
-        ) {
-        Surface(
-            color = DarkBlue40,
-            modifier = Modifier.fillMaxSize(),
-            shape = MaterialTheme.shapes.medium,
-            shadowElevation = 8.dp
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+    Surface(
+        color = DarkBlue40,
+        modifier = Modifier.fillMaxSize(),
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 8.dp
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
 
 
-                Column(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .padding(start = 16.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
+            Column(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(start = 16.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
 
-                    EpisodeTitleStructure(episodeData.id, episodeData.name)
+                EpisodeTitleStructure(episodeData.id, episodeData.name)
 
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-                    EpisodeSubtitleStructure("Air Date: ", episodeData.airDate)
-                    EpisodeStructure(episodeData.episode)
-                }
+                EpisodeSubtitleStructure("Air Date: ", episodeData.airDate)
+                EpisodeStructure(episodeData.episode)
             }
         }
     }
@@ -112,6 +117,7 @@ fun EpisodeSubtitleStructure(title: String, item: String) {
         )
     }
 }
+
 @Composable
 fun EpisodeStructure(episodeNumber: String) {
 

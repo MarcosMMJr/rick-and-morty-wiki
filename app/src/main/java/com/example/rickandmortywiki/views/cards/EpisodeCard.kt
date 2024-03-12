@@ -1,6 +1,5 @@
-package com.example.rickandmortywiki.views.components
+package com.example.rickandmortywiki.views.cards
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,19 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.rickandmortywiki.R
-import com.example.rickandmortywiki.services.models.CharacterModel
 import com.example.rickandmortywiki.services.models.EpisodeModel
-import com.example.rickandmortywiki.services.models.components.CharacterLocationModel
-import com.example.rickandmortywiki.services.models.components.CharacterOriginModel
 import com.example.rickandmortywiki.services.models.components.CharacterUrlModel
-import com.example.rickandmortywiki.services.models.components.EpisodeUrlModel
 import com.example.rickandmortywiki.ui.theme.DarkBlue40
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 

@@ -1,5 +1,6 @@
 package com.example.rickandmortywiki.controllers
 
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -7,8 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.rickandmortywiki.services.models.mockData.MockCharacterData
-import com.example.rickandmortywiki.views.DetailsScreen
-import com.example.rickandmortywiki.views.GeneralCardListScreen
+import com.example.rickandmortywiki.views.detailsScreen.CharacterDetailsScreen
+import com.example.rickandmortywiki.views.cardListScreen.CharacterCardListScreen
 
 @Composable
 fun WikiNavigation() {
@@ -18,10 +19,11 @@ fun WikiNavigation() {
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
+    val scrollState = rememberScrollState()
 
-    NavHost(navController = navController, startDestination = "GeneralCardListScreen") {
-        composable("GeneralCardListScreen") {
-            GeneralCardListScreen(navController = navController)
+    NavHost(navController = navController, startDestination = "CharacterCardListScreen") {
+        composable("CharacterCardListScreen") {
+            CharacterCardListScreen(navController = navController)
         }
         composable("EpisodesListScreen") {
             // EpisodesListScreen()
@@ -29,12 +31,12 @@ fun Navigation() {
         composable("LocationsListScreen") {
             // LocationsListScreen()
         }
-        composable("DetailsScreen/{characterId}",
+        composable("CharacterDetailsScreen/{characterId}",
             arguments = listOf(navArgument("characterId") { type = NavType.IntType })
         ) { navBackStackEntry ->
             val characterId = navBackStackEntry.arguments?.getInt("characterId")
             val characterData = MockCharacterData.getCharacterById(characterId)
-            DetailsScreen(navController = navController, characterData = characterData)
+            CharacterDetailsScreen(navController = navController, scrollState = scrollState, characterData = characterData)
         }
 
     }

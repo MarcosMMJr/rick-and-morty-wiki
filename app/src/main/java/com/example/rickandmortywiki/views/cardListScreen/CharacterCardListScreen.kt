@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki.views
+package com.example.rickandmortywiki.views.cardListScreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,10 +17,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rickandmortywiki.services.models.mockData.MockCharacterData
 import com.example.rickandmortywiki.ui.theme.DarkBlue20
-import com.example.rickandmortywiki.views.components.CharacterCard
+import com.example.rickandmortywiki.ui.theme.LightBlue40
+import com.example.rickandmortywiki.views.cards.CharacterCard
 
 @Composable
-fun GeneralCardListScreen(navController: NavController) {
+fun CharacterCardListScreen(navController: NavController) {
     Surface(color = DarkBlue20) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -28,23 +29,17 @@ fun GeneralCardListScreen(navController: NavController) {
 
             ) {
             Text(
-                text = "Tela de Listas",
+                text = "Characters",
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = LightBlue40,
             )
 
             LazyColumn {
                 items(MockCharacterData.charactersList) { characterData ->
                     CharacterCard(characterData = characterData, onCharacterCardClick = {
-                        navController.navigate("DetailsScreen/${characterData.id}")
+                        navController.navigate("CharacterDetailsScreen/${characterData.id}")
                     })
                 }
-            }
-
-            Button(onClick = {
-                navController.navigate("DetailsScreen")
-            }) {
-                Text(text = "Detalhes")
             }
         }
     }
@@ -53,6 +48,6 @@ fun GeneralCardListScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun GeneralCardListScreenPreview() {
-    GeneralCardListScreen(rememberNavController())
+fun CharacterCardListScreenPreview() {
+    CharacterCardListScreen(rememberNavController())
 }

@@ -62,7 +62,8 @@ fun CharacterDetailsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding),
+                    .padding(padding)
+                    .verticalScroll(scrollState),
             ) {
 
 
@@ -73,14 +74,14 @@ fun CharacterDetailsScreen(
                 Box(
                     modifier = Modifier
                         .padding(vertical = 12.dp)
-                        .width(340.dp)
-                        .height(340.dp)
+                        .width(300.dp)
+                        .height(300.dp)
                         .align(Alignment.CenterHorizontally)
                 ) {
                     CharacterDetailsImage(imageId = characterData.image)
                 }
 
-                CharacterDetailsBottomHalf(characterData = characterData, scrollState)
+                CharacterDetailsBottomHalf(characterData = characterData)
             }
         }
     }
@@ -220,8 +221,8 @@ fun EpisodesApparitionItem() {
 }
 
 @Composable
-fun CharacterDetailsBottomHalf(characterData: CharacterModel, scrollState: ScrollState) {
-    Column(modifier = Modifier.verticalScroll(scrollState)) {
+fun CharacterDetailsBottomHalf(characterData: CharacterModel) {
+    Column {
 
         CharacterDescriptionItem(
             title = "Status",

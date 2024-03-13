@@ -1,40 +1,28 @@
 package com.example.rickandmortywiki.views.detailsScreen
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,7 +37,7 @@ import com.example.rickandmortywiki.ui.theme.DarkBlue20
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 
 @Composable
-fun CharacterDetailsScreen(
+fun EpisodeDetailsScreen(
     navController: NavController,
     scrollState: ScrollState,
     characterData: CharacterModel
@@ -69,57 +57,17 @@ fun CharacterDetailsScreen(
 
 
                 Box(modifier = Modifier.padding(top = 16.dp, start = 16.dp)) {
-                    CharacterDetailsTitle(name = characterData.name, status = characterData.status)
+                    EpisodeDetailsTitle(name = characterData.name, status = characterData.status)
                 }
 
-                Box(
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .width(300.dp)
-                        .height(300.dp)
-                        .align(Alignment.CenterHorizontally)
-                ) {
-                    CharacterDetailsImage(imageId = characterData.image)
-                }
-
-                CharacterDetailsBottomHalf(characterData = characterData)
+                EpisodeDetailsBottomHalf(characterData = characterData)
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterTopBar(onBackPressed: () -> Unit = {}) {
-
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shadowElevation = 4.dp,
-    ) {
-        TopAppBar(title = {
-            Text(
-                text = "Character Details",
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                color = LightBlue40,
-            )
-        }, navigationIcon = {
-            IconButton(onClick = { onBackPressed() }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = "Back button",
-                    tint = LightBlue40
-                )
-            }
-
-        }, colors = TopAppBarDefaults.topAppBarColors(DarkBlue20))
-    }
-
-}
-
-@Composable
-fun CharacterDetailsTitle(name: String, status: String) {
+fun EpisodeDetailsTitle(name: String, status: String) {
     Column {
         Text(
             text = name,
@@ -153,22 +101,9 @@ fun CharacterDetailsTitle(name: String, status: String) {
     }
 }
 
-@Composable
-fun CharacterDetailsImage(imageId: Int) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        shadowElevation = 2.dp,
-    ) {
-        Image(
-            painter = painterResource(id = imageId),
-            contentDescription = "Profile Image",
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
 
 @Composable
-fun CharacterDescriptionItem(title: String, description: String) {
+fun EpisodeDescriptionItem(title: String, description: String) {
     Column(Modifier.padding(start = 16.dp)) {
         Text(
             text = title,
@@ -189,7 +124,7 @@ fun CharacterDescriptionItem(title: String, description: String) {
 }
 
 @Composable
-fun EpisodesApparitionItem() {
+fun CharactersApparitionItem() {
     Column {
         Box(modifier = Modifier.padding(start = 16.dp)) {
 
@@ -222,44 +157,32 @@ fun EpisodesApparitionItem() {
 }
 
 @Composable
-fun CharacterDetailsBottomHalf(characterData: CharacterModel) {
+fun EpisodeDetailsBottomHalf(characterData: CharacterModel) {
     Column {
 
-        CharacterDescriptionItem(
+        EpisodeDescriptionItem(
             title = "Status",
             description = characterData.status
         )
 
-        CharacterDescriptionItem(
+        EpisodeDescriptionItem(
             title = "Last known location",
             description = characterData.location.name
         )
 
 
-        CharacterDescriptionItem(
+        EpisodeDescriptionItem(
             title = "Species",
             description = characterData.species
         )
 
-
-        if (characterData.type.isNotEmpty()) {
-
-
-            CharacterDescriptionItem(
-                title = "Type",
-                description = characterData.type
-            )
-
-        }
-
-
-        CharacterDescriptionItem(
+        EpisodeDescriptionItem(
             title = "Gender",
             description = characterData.gender
         )
 
 
-        CharacterDescriptionItem(
+        EpisodeDescriptionItem(
             title = "Origin",
             description = characterData.origin.name
         )
@@ -269,19 +192,10 @@ fun CharacterDetailsBottomHalf(characterData: CharacterModel) {
 }
 
 
-fun colorFilterCheck(status: String): Color {
-    return when (status) {
-        "Alive" -> Color.Green
-        "Dead" -> Color.Red
-        else -> Color.Yellow
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
-fun CharacterDetailsScreenPreview() {
-    CharacterDetailsScreen(
+fun EpisodeDetailsScreenPreview() {
+    EpisodeDetailsScreen(
         rememberNavController(),
         rememberScrollState(),
         characterData = CharacterModel(

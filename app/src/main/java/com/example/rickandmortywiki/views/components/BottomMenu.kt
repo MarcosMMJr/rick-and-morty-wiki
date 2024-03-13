@@ -2,6 +2,7 @@ package com.example.rickandmortywiki.views.components
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Surface
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,27 +25,40 @@ fun BottomMenu(navController: NavController) {
         BottomMenuNavigation.CharacterListScreen,
         BottomMenuNavigation.LocationListScreen
     )
+    Surface(elevation = 16.dp) {
 
-    BottomNavigation(
-        backgroundColor = DarkBlue20,
-        elevation = 4.dp
-    ) {
+        BottomNavigation(
+            backgroundColor = DarkBlue20,
+            elevation = 4.dp
+        ) {
 
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
 
-        menuItems.forEach {
-            BottomNavigationItem(
-                label = { Text(text = it.label, color = selectedTabColor(currentRoute, it.route)) },
-                icon = { Icon(it.icon, contentDescription = it.label, tint = selectedTabColor(currentRoute, it.route)) },
-                alwaysShowLabel = true,
-                selectedContentColor = DarkBlue40,
-                unselectedContentColor = Color.White,
-                selected = currentRoute == it.route,
-                onClick = {
-                    bottomNavigationClickAction(navController, it)
-                },
-            )
+            menuItems.forEach {
+                BottomNavigationItem(
+                    label = {
+                        Text(
+                            text = it.label,
+                            color = selectedTabColor(currentRoute, it.route)
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            it.icon,
+                            contentDescription = it.label,
+                            tint = selectedTabColor(currentRoute, it.route)
+                        )
+                    },
+                    alwaysShowLabel = true,
+                    selectedContentColor = DarkBlue40,
+                    unselectedContentColor = Color.White,
+                    selected = currentRoute == it.route,
+                    onClick = {
+                        bottomNavigationClickAction(navController, it)
+                    },
+                )
+            }
         }
     }
 }

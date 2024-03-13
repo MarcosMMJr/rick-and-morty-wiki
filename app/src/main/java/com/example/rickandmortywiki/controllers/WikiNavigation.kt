@@ -36,11 +36,7 @@ fun WikiNavigation() {
 @Composable
 fun BottomMenuBar(navController: NavHostController, scrollState: ScrollState) {
     Scaffold(bottomBar = {
-        Surface(
-            shadowElevation = 16.dp,
-        ) {
-            BottomMenu(navController = navController)
-        }
+        BottomMenu(navController = navController)
     }) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             Navigation(navHostController = navController, scrollState = scrollState)

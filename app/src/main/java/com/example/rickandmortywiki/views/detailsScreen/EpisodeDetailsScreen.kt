@@ -35,6 +35,7 @@ import com.example.rickandmortywiki.services.models.components.CharacterOriginMo
 import com.example.rickandmortywiki.services.models.components.EpisodeUrlModel
 import com.example.rickandmortywiki.ui.theme.DarkBlue20
 import com.example.rickandmortywiki.ui.theme.LightBlue40
+import com.example.rickandmortywiki.views.components.TopMenuBar
 
 @Composable
 fun EpisodeDetailsScreen(
@@ -43,7 +44,7 @@ fun EpisodeDetailsScreen(
     characterData: CharacterModel
 ) {
     Scaffold(topBar = {
-        CharacterTopBar {
+        TopMenuBar {
             navController.popBackStack()
         }
     }) { padding ->

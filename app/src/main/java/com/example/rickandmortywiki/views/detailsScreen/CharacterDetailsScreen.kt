@@ -1,61 +1,51 @@
 package com.example.rickandmortywiki.views.detailsScreen
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rickandmortywiki.R
-import com.example.rickandmortywiki.services.models.CharacterModel
-import com.example.rickandmortywiki.services.models.components.CharacterLocationModel
-import com.example.rickandmortywiki.services.models.components.CharacterOriginModel
-import com.example.rickandmortywiki.services.models.components.EpisodeUrlModel
+import com.example.rickandmortywiki.services.models.CharacterModelResponse
+import com.example.rickandmortywiki.services.models.components.CharacterLocationModelResponse
+import com.example.rickandmortywiki.services.models.components.CharacterOriginModelResponse
 import com.example.rickandmortywiki.ui.theme.DarkBlue20
 import com.example.rickandmortywiki.ui.theme.LightBlue40
+import com.example.rickandmortywiki.views.components.TopMenuBar
+import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
 fun CharacterDetailsScreen(
     navController: NavController,
     scrollState: ScrollState,
-    characterData: CharacterModel
+    characterData: CharacterModelResponse
 ) {
     Scaffold(topBar = {
-        CharacterTopBar {
+        TopMenuBar {
             navController.popBackStack()
         }
     }) { padding ->
@@ -69,7 +59,14 @@ fun CharacterDetailsScreen(
 
 
                 Box(modifier = Modifier.padding(top = 16.dp, start = 16.dp)) {
-                    CharacterDetailsTitle(name = characterData.name, status = characterData.status)
+                    characterData.name?.let { characterName ->
+                        characterData.status?.let { characterStatus ->
+                            CharacterDetailsTitle(
+                                name = characterName,
+                                status = characterStatus
+                            )
+                        }
+                    }
                 }
 
                 Box(
@@ -79,7 +76,7 @@ fun CharacterDetailsScreen(
                         .height(300.dp)
                         .align(Alignment.CenterHorizontally)
                 ) {
-                    CharacterDetailsImage(imageId = characterData.image)
+                    characterData.image?.let { CharacterDetailsImage(imageUrl = it) }
                 }
 
                 CharacterDetailsBottomHalf(characterData = characterData)
@@ -88,35 +85,7 @@ fun CharacterDetailsScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CharacterTopBar(onBackPressed: () -> Unit = {}) {
 
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shadowElevation = 4.dp,
-    ) {
-        TopAppBar(title = {
-            Text(
-                text = "Character Details",
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                color = LightBlue40,
-            )
-        }, navigationIcon = {
-            IconButton(onClick = { onBackPressed() }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = "Back button",
-                    tint = LightBlue40
-                )
-            }
-
-        }, colors = TopAppBarDefaults.topAppBarColors(DarkBlue20))
-    }
-
-}
 
 @Composable
 fun CharacterDetailsTitle(name: String, status: String) {
@@ -154,14 +123,16 @@ fun CharacterDetailsTitle(name: String, status: String) {
 }
 
 @Composable
-fun CharacterDetailsImage(imageId: Int) {
+fun CharacterDetailsImage(imageUrl: String) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 2.dp,
     ) {
-        Image(
-            painter = painterResource(id = imageId),
-            contentDescription = "Profile Image",
+        CoilImage(
+            imageModel = imageUrl,
+            contentDescription = "Profile image",
+            error = painterResource(id = R.drawable.image_not_found),
+            placeHolder = painterResource(id = R.drawable.portal_placeholder),
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -222,47 +193,57 @@ fun EpisodesApparitionItem() {
 }
 
 @Composable
-fun CharacterDetailsBottomHalf(characterData: CharacterModel) {
+fun CharacterDetailsBottomHalf(characterData: CharacterModelResponse) {
     Column {
 
-        CharacterDescriptionItem(
-            title = "Status",
-            description = characterData.status
-        )
+        characterData.status?.let {
+            CharacterDescriptionItem(
+                title = "Status",
+                description = it
+            )
+        }
 
-        CharacterDescriptionItem(
-            title = "Last known location",
-            description = characterData.location.name
-        )
-
-
-        CharacterDescriptionItem(
-            title = "Species",
-            description = characterData.species
-        )
+        characterData.location?.name?.let {
+            CharacterDescriptionItem(
+                title = "Last known location",
+                description = it
+            )
+        }
 
 
-        if (characterData.type.isNotEmpty()) {
+        characterData.species?.let {
+            CharacterDescriptionItem(
+                title = "Species",
+                description = it
+            )
+        }
+
+
+        if (characterData.type?.isNotEmpty() == true) {
 
 
             CharacterDescriptionItem(
-                title = "Type",
-                description = characterData.type
-            )
+                    title = "Type",
+                    description = characterData.type
+                )
 
         }
 
 
-        CharacterDescriptionItem(
-            title = "Gender",
-            description = characterData.gender
-        )
+        characterData.gender?.let {
+            CharacterDescriptionItem(
+                title = "Gender",
+                description = it
+            )
+        }
 
 
-        CharacterDescriptionItem(
-            title = "Origin",
-            description = characterData.origin.name
-        )
+        characterData.origin?.name?.let {
+            CharacterDescriptionItem(
+                title = "Origin",
+                description = it
+            )
+        }
 
         EpisodesApparitionItem()
     }
@@ -284,26 +265,26 @@ fun CharacterDetailsScreenPreview() {
     CharacterDetailsScreen(
         rememberNavController(),
         rememberScrollState(),
-        characterData = CharacterModel(
+        characterData = CharacterModelResponse(
             id = 1,
             name = "Rick Sanchez",
             status = "Alive",
             species = "Human",
             type = "",
             gender = "Male",
-            origin = CharacterOriginModel(
+            origin = CharacterOriginModelResponse(
                 name = "Earth (C-137)",
                 url = "https://rickandmortyapi.com/api/location/1"
             ),
-            location = CharacterLocationModel(
+            location = CharacterLocationModelResponse(
                 name = "Citadel of Ricks",
                 url = "https://rickandmortyapi.com/api/location/3",
             ),
-            image = R.drawable.rick_sanchez,
+            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
             episode = listOf(
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/1"),
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/2"),
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/3"),
+                "https://rickandmortyapi.com/api/episode/1",
+                "https://rickandmortyapi.com/api/episode/2",
+                "https://rickandmortyapi.com/api/episode/3",
             ),
             url = "https://rickandmortyapi.com/api/character/1",
             created = "2017-11-04T18:48:46.250Z"

@@ -14,12 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rickandmortywiki.services.mockData.MockCharacterData
+import com.example.rickandmortywiki.services.models.CharacterModelResponse
 import com.example.rickandmortywiki.ui.theme.DarkBlue20
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 import com.example.rickandmortywiki.views.cards.CharacterCard
 
 @Composable
-fun CharacterListScreen(navController: NavController) {
+fun CharacterListScreen(navController: NavController, characters: List<CharacterModelResponse>) {
     Surface(color = DarkBlue20) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -31,13 +32,22 @@ fun CharacterListScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 color = LightBlue40,
             )
-
+//
+//            LazyColumn {
+//                items(characters) { characterData ->
+//                    CharacterCard(characterData = characterData) {
+//                        navController.navigate("CharacterDetailsScreen")
+//                    }
+//                }
+//            }
             LazyColumn {
-                items(MockCharacterData.charactersList) { characterData ->
-                    CharacterCard(characterData = characterData, onCharacterCardClick = {
-                        navController.navigate("CharacterDetailsScreen/${characterData.id}")
-                    })
+                items(characters.size) { index ->
+                    CharacterCard(
+                        characterData = characters[index],
+                        onCharacterCardClick = { navController.navigate("CharacterDetailsScreen/$index") }
+                    )
                 }
+
             }
         }
     }
@@ -47,5 +57,5 @@ fun CharacterListScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun CharacterListScreenPreview() {
-    CharacterListScreen(rememberNavController())
+    CharacterListScreen(rememberNavController(), MockCharacterData.charactersList)
 }

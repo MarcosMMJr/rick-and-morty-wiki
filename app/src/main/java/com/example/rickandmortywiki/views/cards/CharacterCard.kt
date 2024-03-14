@@ -27,14 +27,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.services.models.CharacterModel
+import com.example.rickandmortywiki.services.models.CharacterModelResponse
 import com.example.rickandmortywiki.services.models.components.CharacterLocationModel
+import com.example.rickandmortywiki.services.models.components.CharacterLocationModelResponse
 import com.example.rickandmortywiki.services.models.components.CharacterOriginModel
+import com.example.rickandmortywiki.services.models.components.CharacterOriginModelResponse
 import com.example.rickandmortywiki.services.models.components.EpisodeUrlModel
 import com.example.rickandmortywiki.ui.theme.DarkBlue40
 import com.example.rickandmortywiki.ui.theme.LightBlue40
+import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
-fun CharacterCard(characterData: CharacterModel, onCharacterCardClick: () -> Unit = {}) {
+fun CharacterCard(characterData: CharacterModelResponse, onCharacterCardClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .height(150.dp)
@@ -50,7 +54,7 @@ fun CharacterCard(characterData: CharacterModel, onCharacterCardClick: () -> Uni
 
 
 @Composable
-fun CharacterCardStructure(characterData: CharacterModel) {
+fun CharacterCardStructure(characterData: CharacterModelResponse) {
     Surface(
         color = DarkBlue40,
         modifier = Modifier.fillMaxSize(),
@@ -59,7 +63,7 @@ fun CharacterCardStructure(characterData: CharacterModel) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
-            CharacterImage(characterData.image)
+            characterData.image?.let { CharacterImage(it) }
 
             Column(
                 modifier = Modifier
@@ -67,31 +71,34 @@ fun CharacterCardStructure(characterData: CharacterModel) {
                     .padding(start = 16.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = characterData.name,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
+                characterData.name?.let {
+                    Text(
+                        text = it,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
                 Spacer(modifier = Modifier.height(15.dp))
-                CharacterSubtitleStructure("Status: ", characterData.status)
-                CharacterSubtitleStructure("Species: ", characterData.species)
-                CharacterSubtitleStructure("Origin: ", characterData.origin.name)
+                characterData.status?.let { CharacterSubtitleStructure("Status: ", it) }
+                characterData.species?.let { CharacterSubtitleStructure("Species: ", it) }
+                characterData.origin?.name?.let { CharacterSubtitleStructure("Origin: ", it) }
             }
         }
     }
 }
 
 @Composable
-fun CharacterImage(imageId: Int) {
+fun CharacterImage(imageUrl: String) {
     Surface(
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.padding(start = 16.dp),
+        modifier = Modifier.padding(start = 10.dp).height(120.dp).width(120.dp),
         shadowElevation = 2.dp
     ) {
-        Image(
-            painter = painterResource(imageId),
+        CoilImage(
+            imageModel = imageUrl,
             contentDescription = "Profile image",
-            contentScale = ContentScale.FillBounds
+            error = painterResource(id = R.drawable.image_not_found),
+            placeHolder = painterResource(id = R.drawable.portal_placeholder),
         )
     }
 }
@@ -120,26 +127,26 @@ fun CharacterSubtitleStructure(title: String, item: String) {
 @Composable
 fun CharacterCardPreview() {
     CharacterCard(
-        characterData = CharacterModel(
+        characterData = CharacterModelResponse(
             id = 1,
             name = "Rick Sanchez",
             status = "Alive",
             species = "Human",
             type = "",
             gender = "Male",
-            origin = CharacterOriginModel(
+            origin = CharacterOriginModelResponse(
                 name = "Earth (C-137)",
                 url = "https://rickandmortyapi.com/api/location/1"
             ),
-            location = CharacterLocationModel(
+            location = CharacterLocationModelResponse(
                 name = "Citadel of Ricks",
                 url = "https://rickandmortyapi.com/api/location/3",
             ),
-            image = R.drawable.rick_sanchez,
+            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
             episode = listOf(
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/1"),
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/2"),
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/3"),
+                "https://rickandmortyapi.com/api/episode/1",
+                "https://rickandmortyapi.com/api/episode/2",
+                "https://rickandmortyapi.com/api/episode/3",
             ),
             url = "https://rickandmortyapi.com/api/character/1",
             created = "2017-11-04T18:48:46.250Z"

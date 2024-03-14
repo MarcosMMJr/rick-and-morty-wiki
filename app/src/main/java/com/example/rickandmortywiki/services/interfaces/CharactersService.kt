@@ -8,4 +8,6 @@ interface CharactersService {
     @GET("character/")
     fun getCharacters(): Call<CharactersResponse>
 
+    @GET("character/{id}")
+    fun getCharacterById(id: Int): Call<CharactersResponse>
 }

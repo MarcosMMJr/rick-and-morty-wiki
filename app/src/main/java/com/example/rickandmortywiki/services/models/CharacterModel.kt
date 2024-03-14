@@ -19,7 +19,6 @@ data class CharacterModel(
     val episode: List<EpisodeUrlModel>,
     val url: String,
     val created: String
-    //TODO: change image to String
 )
 
 data class CharacterModelResponse(

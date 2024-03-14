@@ -32,14 +32,7 @@ fun CharacterListScreen(navController: NavController, characters: List<Character
                 fontWeight = FontWeight.Bold,
                 color = LightBlue40,
             )
-//
-//            LazyColumn {
-//                items(characters) { characterData ->
-//                    CharacterCard(characterData = characterData) {
-//                        navController.navigate("CharacterDetailsScreen")
-//                    }
-//                }
-//            }
+
             LazyColumn {
                 items(characters.size) { index ->
                     CharacterCard(

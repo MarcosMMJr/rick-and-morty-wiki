@@ -1,6 +1,7 @@
 package com.example.rickandmortywiki.services
 
 import com.example.rickandmortywiki.services.interfaces.CharactersService
+import com.example.rickandmortywiki.services.interfaces.EpisodesService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -21,5 +22,9 @@ object Api {
 
     val characterService: CharactersService by lazy {
         retrofit.create(CharactersService::class.java)
+    }
+
+    val episodeService: EpisodesService by lazy {
+        retrofit.create(EpisodesService::class.java)
     }
 }

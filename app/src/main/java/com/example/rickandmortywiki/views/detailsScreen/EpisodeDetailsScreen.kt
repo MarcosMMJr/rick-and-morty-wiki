@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.services.models.CharacterModel
+import com.example.rickandmortywiki.services.models.EpisodeModelResponse
 import com.example.rickandmortywiki.services.models.components.CharacterLocationModel
 import com.example.rickandmortywiki.services.models.components.CharacterOriginModel
 import com.example.rickandmortywiki.services.models.components.EpisodeUrlModel
@@ -41,7 +42,7 @@ import com.example.rickandmortywiki.views.components.TopMenuBar
 fun EpisodeDetailsScreen(
     navController: NavController,
     scrollState: ScrollState,
-    characterData: CharacterModel
+    episodeData: EpisodeModelResponse
 ) {
     Scaffold(topBar = {
         TopMenuBar {
@@ -58,47 +59,39 @@ fun EpisodeDetailsScreen(
 
 
                 Box(modifier = Modifier.padding(top = 16.dp, start = 16.dp)) {
-                    EpisodeDetailsTitle(name = characterData.name, status = characterData.status)
+                    episodeData.id?.let { id ->
+                        episodeData.name?.let { title ->
+                            EpisodeDetailsTitle(
+                                id = id,
+                                title = title
+                            )
+                        }
+                    }
                 }
 
-                EpisodeDetailsBottomHalf(characterData = characterData)
+                EpisodeDetailsBottomHalf(episodeData = episodeData)
             }
         }
     }
 }
 
 @Composable
-fun EpisodeDetailsTitle(name: String, status: String) {
-    Column {
+fun EpisodeDetailsTitle(id: Int, title: String) {
+    Row {
         Text(
-            text = name,
+            text = "$id. ",
+            fontWeight = FontWeight.Bold,
+            fontSize = 32.sp,
+            color = Color.White
+        )
+
+        Text(
+            text = title,
             fontWeight = FontWeight.Bold,
             fontSize = 32.sp,
             color = LightBlue40
         )
-        Row {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(top = 8.dp, start = 2.dp, end = 4.dp)
-            ) {
-                Surface(
-                    content = {},
-                    shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier
-                        .height(5.dp)
-                        .width(5.dp),
-                    color = colorFilterCheck(status)
 
-                )
-            }
-            Text(
-                text = status,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                color = Color.White
-            )
-
-        }
     }
 }
 
@@ -130,7 +123,7 @@ fun CharactersApparitionItem() {
         Box(modifier = Modifier.padding(start = 16.dp)) {
 
             Text(
-                text = "Episodes Apparition",
+                text = "Characters in this episode",
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = LightBlue40
@@ -149,7 +142,7 @@ fun CharactersApparitionItem() {
                 colors = ButtonDefaults.buttonColors(DarkBlue20),
                 onClick = {}
             ) {
-                Text(text = " Episodes List")
+                Text(text = "Characters List")
             }
         }
 
@@ -158,37 +151,63 @@ fun CharactersApparitionItem() {
 }
 
 @Composable
-fun EpisodeDetailsBottomHalf(characterData: CharacterModel) {
+fun EpisodeStructureItem(episodeNumber: String) {
+
+    val season = episodeNumber.substring(1, 3)
+    val episode = episodeNumber.substring(4, 6)
+
+    Column (modifier = Modifier.padding(start = 16.dp)) {
+        Text(
+            text = "Season",
+            color = LightBlue40,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp
+        )
+        Text(
+            text = season,
+            color = Color.White,
+            fontWeight = FontWeight.Normal,
+            fontSize = 20.sp
+        )
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Text(
+            text = "Episode",
+            color = LightBlue40,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp
+        )
+        Text(
+            text = episode,
+            color = Color.White,
+            fontWeight = FontWeight.Normal,
+            fontSize = 20.sp
+        )
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+    }
+}
+
+@Composable
+fun EpisodeDetailsBottomHalf(episodeData: EpisodeModelResponse) {
     Column {
 
-        EpisodeDescriptionItem(
-            title = "Status",
-            description = characterData.status
-        )
+        episodeData.airDate?.let {
+            EpisodeDescriptionItem(
+                title = "Air Date",
+                description = it
+            )
+        }
 
-        EpisodeDescriptionItem(
-            title = "Last known location",
-            description = characterData.location.name
-        )
+        episodeData.episode?.let {
+            EpisodeStructureItem(
+                episodeNumber = it
+            )
+        }
 
-
-        EpisodeDescriptionItem(
-            title = "Species",
-            description = characterData.species
-        )
-
-        EpisodeDescriptionItem(
-            title = "Gender",
-            description = characterData.gender
-        )
-
-
-        EpisodeDescriptionItem(
-            title = "Origin",
-            description = characterData.origin.name
-        )
-
-        EpisodesApparitionItem()
+        CharactersApparitionItem()
     }
 }
 
@@ -199,29 +218,34 @@ fun EpisodeDetailsScreenPreview() {
     EpisodeDetailsScreen(
         rememberNavController(),
         rememberScrollState(),
-        characterData = CharacterModel(
+        episodeData = EpisodeModelResponse(
             id = 1,
-            name = "Rick Sanchez",
-            status = "Alive",
-            species = "Human",
-            type = "",
-            gender = "Male",
-            origin = CharacterOriginModel(
-                name = "Earth (C-137)",
-                url = "https://rickandmortyapi.com/api/location/1"
+            name = "Pilot",
+            airDate = "December 2, 2013",
+            episode = "S01E01",
+            characters = listOf(
+                "https://rickandmortyapi.com/api/character/1",
+                "https://rickandmortyapi.com/api/character/2",
+                "https://rickandmortyapi.com/api/character/35",
+                "https://rickandmortyapi.com/api/character/38",
+                "https://rickandmortyapi.com/api/character/62",
+                "https://rickandmortyapi.com/api/character/92",
+                "https://rickandmortyapi.com/api/character/127",
+                "https://rickandmortyapi.com/api/character/144",
+                "https://rickandmortyapi.com/api/character/158",
+                "https://rickandmortyapi.com/api/character/175",
+                "https://rickandmortyapi.com/api/character/179",
+                "https://rickandmortyapi.com/api/character/181",
+                "https://rickandmortyapi.com/api/character/239",
+                "https://rickandmortyapi.com/api/character/249",
+                "https://rickandmortyapi.com/api/character/271",
+                "https://rickandmortyapi.com/api/character/338",
+                "https://rickandmortyapi.com/api/character/394",
+                "https://rickandmortyapi.com/api/character/395",
+                "https://rickandmortyapi.com/api/character/435"
             ),
-            location = CharacterLocationModel(
-                name = "Citadel of Ricks",
-                url = "https://rickandmortyapi.com/api/location/3",
-            ),
-            image = R.drawable.rick_sanchez,
-            episode = listOf(
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/1"),
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/2"),
-                EpisodeUrlModel("https://rickandmortyapi.com/api/episode/3"),
-            ),
-            url = "https://rickandmortyapi.com/api/character/1",
-            created = "2017-11-04T18:48:46.250Z"
-        ),
+            url = "https://rickandmortyapi.com/api/episode/1",
+            created = "2017-11-10T12:56:33.798Z"
+        )
     )
 }

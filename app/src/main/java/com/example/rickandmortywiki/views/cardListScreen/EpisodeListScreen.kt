@@ -14,12 +14,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rickandmortywiki.services.mockData.MockCharacterData
+import com.example.rickandmortywiki.services.mockData.MockEpisodeData
+import com.example.rickandmortywiki.services.models.EpisodeModelResponse
 import com.example.rickandmortywiki.ui.theme.DarkBlue20
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 import com.example.rickandmortywiki.views.cards.CharacterCard
+import com.example.rickandmortywiki.views.cards.EpisodeCard
 
 @Composable
-fun EpisodeListScreen(navController: NavController) {
+fun EpisodeListScreen(navController: NavController, episodes: List<EpisodeModelResponse>) {
     Surface(color = DarkBlue20) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -32,13 +35,16 @@ fun EpisodeListScreen(navController: NavController) {
                 color = LightBlue40,
             )
 
-//            LazyColumn {
-//                items(MockCharacterData.charactersList) { characterData ->
-//                    CharacterCard(characterData = characterData, onCharacterCardClick = {
-//                        navController.navigate("CharacterDetailsScreen/${characterData.id}")
-//                    })
-//                }
-//            }
+            LazyColumn {
+                items(episodes.size) { index ->
+                    EpisodeCard(
+                        episodeData = episodes[index],
+                        onEpisodeCardClick = { navController.navigate("EpisodeDetailsScreen/$index") }
+                    )
+                }
+
+            }
+
         }
     }
 }
@@ -47,5 +53,5 @@ fun EpisodeListScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun EpisodeListScreenPreview() {
-    EpisodeListScreen(rememberNavController())
+    EpisodeListScreen(rememberNavController(), MockEpisodeData.episodesList)
 }

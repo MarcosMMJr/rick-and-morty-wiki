@@ -3,7 +3,6 @@ package com.example.rickandmortywiki.controllers
 import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
@@ -18,13 +17,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.rickandmortywiki.services.managers.CharactersManager
-import com.example.rickandmortywiki.services.mockData.MockCharacterData
+import com.example.rickandmortywiki.services.managers.EpisodesManager
 import com.example.rickandmortywiki.services.models.CharacterModelResponse
+import com.example.rickandmortywiki.services.models.EpisodeModelResponse
 import com.example.rickandmortywiki.views.cardListScreen.CharacterListScreen
 import com.example.rickandmortywiki.views.cardListScreen.EpisodeListScreen
 import com.example.rickandmortywiki.views.cardListScreen.LocationListScreen
 import com.example.rickandmortywiki.views.components.BottomMenu
 import com.example.rickandmortywiki.views.detailsScreen.CharacterDetailsScreen
+import com.example.rickandmortywiki.views.detailsScreen.EpisodeDetailsScreen
 
 @Composable
 fun WikiNavigation() {
@@ -53,38 +54,61 @@ fun Navigation(
     navHostController: NavHostController,
     scrollState: ScrollState,
     charactersManager: CharactersManager = CharactersManager(),
+    episodesManager: EpisodesManager = EpisodesManager(),
 ) {
 
     val charactersData = charactersManager.charactersResponse.value.results
+    val episodesData = episodesManager.episodesResponse.value.results
     Log.d("pages of Characters", "$charactersData \n\n")
+    Log.d("pages of Episodes", "$episodesData \n\n")
 
     charactersData?.let {
+        episodesData?.let {
 
-        NavHost(
-            navController = navHostController,
-            startDestination =
-            BottomMenuNavigation.CharacterListScreen.route,
-        ) {
-            bottomNavigation(navController = navHostController, characters = charactersData)
+            NavHost(
+                navController = navHostController,
+                startDestination =
+                BottomMenuNavigation.CharacterListScreen.route,
+            ) {
+                bottomNavigation(
+                    navController = navHostController,
+                    characters = charactersData,
+                    episodes = episodesData
+                )
 
-            composable("EpisodesListScreen") {
+                composable("EpisodesListScreen") {
 //             EpisodeListScreen(navHostController = navHostController)
-            }
-            composable("LocationsListScreen") {
+                }
+                composable("LocationsListScreen") {
 //             LocationListScreen(navHostController = navHostController)
-            }
-            composable(
-                "CharacterDetailsScreen/{index}",
-                arguments = listOf(navArgument("index") { type = NavType.IntType })
-            ) { navBackStackEntry ->
-                val characterIndex = navBackStackEntry.arguments?.getInt("index")
-                characterIndex?.let{
-                    val characterData = charactersData[characterIndex]
-                    CharacterDetailsScreen(
-                        navController = navHostController,
-                        scrollState = scrollState,
-                        characterData = characterData
-                    )
+                }
+                composable(
+                    "CharacterDetailsScreen/{index}",
+                    arguments = listOf(navArgument("index") { type = NavType.IntType })
+                ) { navBackStackEntry ->
+                    val characterIndex = navBackStackEntry.arguments?.getInt("index")
+                    characterIndex?.let {
+                        val characterData = charactersData[characterIndex]
+                        CharacterDetailsScreen(
+                            navController = navHostController,
+                            scrollState = scrollState,
+                            characterData = characterData
+                        )
+                    }
+                }
+                composable(
+                    "EpisodeDetailsScreen/{index}",
+                    arguments = listOf(navArgument("index") { type = NavType.IntType })
+                ) { navBackStackEntry ->
+                    val episodeIndex = navBackStackEntry.arguments?.getInt("index")
+                    episodeIndex?.let {
+                        val episodeData = episodesData[episodeIndex]
+                        EpisodeDetailsScreen(
+                            navController = navHostController,
+                            scrollState = scrollState,
+                            episodeData = episodeData
+                        )
+                    }
                 }
             }
         }
@@ -93,10 +117,11 @@ fun Navigation(
 
 fun NavGraphBuilder.bottomNavigation(
     navController: NavController,
-    characters: List<CharacterModelResponse>
+    characters: List<CharacterModelResponse>,
+    episodes: List<EpisodeModelResponse>
 ) {
     composable(BottomMenuNavigation.EpisodeListScreen.route) {
-        EpisodeListScreen(navController = navController)
+        EpisodeListScreen(navController = navController, episodes = episodes)
 
     }
     composable(BottomMenuNavigation.CharacterListScreen.route) {

@@ -22,13 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.rickandmortywiki.services.models.EpisodeModel
-import com.example.rickandmortywiki.services.models.components.CharacterUrlModel
+import com.example.rickandmortywiki.services.models.EpisodeModelResponse
 import com.example.rickandmortywiki.ui.theme.DarkBlue40
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 
 @Composable
-fun EpisodeCard(episodeData: EpisodeModel, onEpisodeCardClick: () -> Unit = {}) {
+fun EpisodeCard(episodeData: EpisodeModelResponse, onEpisodeCardClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .height(100.dp)
@@ -45,7 +44,7 @@ fun EpisodeCard(episodeData: EpisodeModel, onEpisodeCardClick: () -> Unit = {}) 
 
 
 @Composable
-fun EpisodeCardStructure(episodeData: EpisodeModel) {
+fun EpisodeCardStructure(episodeData: EpisodeModelResponse) {
 
     Surface(
         color = DarkBlue40,
@@ -63,13 +62,20 @@ fun EpisodeCardStructure(episodeData: EpisodeModel) {
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                EpisodeTitleStructure(episodeData.id, episodeData.name)
+                episodeData.id?.let { id ->
+                    episodeData.name?.let { title ->
+                        EpisodeTitleStructure(
+                            id,
+                            title
+                        )
+                    }
+                }
 
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                EpisodeSubtitleStructure("Air Date: ", episodeData.airDate)
-                EpisodeStructure(episodeData.episode)
+                episodeData.airDate?.let { EpisodeSubtitleStructure("Air Date: ", it) }
+                episodeData.episode?.let { EpisodeStructure(it) }
             }
         }
     }
@@ -152,31 +158,31 @@ fun EpisodeStructure(episodeNumber: String) {
 @Composable
 fun EpisodeCardPreview() {
     EpisodeCard(
-        episodeData = EpisodeModel(
+        episodeData = EpisodeModelResponse(
             id = 1,
             name = "Pilot",
             airDate = "December 2, 2013",
             episode = "S01E01",
             characters = listOf(
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/1"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/2"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/35"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/38"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/62"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/92"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/127"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/144"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/158"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/175"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/179"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/181"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/239"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/249"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/271"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/338"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/394"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/395"),
-                CharacterUrlModel("https://rickandmortyapi.com/api/character/435")
+                "https://rickandmortyapi.com/api/character/1",
+                "https://rickandmortyapi.com/api/character/2",
+                "https://rickandmortyapi.com/api/character/35",
+                "https://rickandmortyapi.com/api/character/38",
+                "https://rickandmortyapi.com/api/character/62",
+                "https://rickandmortyapi.com/api/character/92",
+                "https://rickandmortyapi.com/api/character/127",
+                "https://rickandmortyapi.com/api/character/144",
+                "https://rickandmortyapi.com/api/character/158",
+                "https://rickandmortyapi.com/api/character/175",
+                "https://rickandmortyapi.com/api/character/179",
+                "https://rickandmortyapi.com/api/character/181",
+                "https://rickandmortyapi.com/api/character/239",
+                "https://rickandmortyapi.com/api/character/249",
+                "https://rickandmortyapi.com/api/character/271",
+                "https://rickandmortyapi.com/api/character/338",
+                "https://rickandmortyapi.com/api/character/394",
+                "https://rickandmortyapi.com/api/character/395",
+                "https://rickandmortyapi.com/api/character/435"
             ),
             url = "https://rickandmortyapi.com/api/episode/1",
             created = "2017-11-10T12:56:33.798Z"

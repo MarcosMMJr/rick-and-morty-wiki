@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki.services.models.mockData
+package com.example.rickandmortywiki.services.mockData
 
 import com.example.rickandmortywiki.R
 import com.example.rickandmortywiki.services.models.CharacterModel

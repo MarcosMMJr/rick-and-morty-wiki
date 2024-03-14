@@ -11,3 +11,12 @@ data class EpisodeModel(
     val url: String,
     val created: String
 )
+data class EpisodeModelResponse(
+    val id: Int? = null,
+    val name: String? = null,
+    val airDate: String? = null,
+    val episode: String? = null,
+    val characters: List<String>? = null,
+    val url: String? = null,
+    val created: String? = null
+)

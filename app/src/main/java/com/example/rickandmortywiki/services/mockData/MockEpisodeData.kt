@@ -1,4 +1,4 @@
-package com.example.rickandmortywiki.services.models.mockData
+package com.example.rickandmortywiki.services.mockData
 
 import com.example.rickandmortywiki.services.models.EpisodeModel
 import com.example.rickandmortywiki.services.models.components.CharacterUrlModel

@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.rickandmortywiki.services.models.mockData.MockCharacterData
+import com.example.rickandmortywiki.services.mockData.MockCharacterData
 import com.example.rickandmortywiki.ui.theme.DarkBlue20
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 import com.example.rickandmortywiki.views.cards.CharacterCard

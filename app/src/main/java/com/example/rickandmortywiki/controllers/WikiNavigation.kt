@@ -1,5 +1,6 @@
 package com.example.rickandmortywiki.controllers
 
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.rickandmortywiki.services.models.mockData.MockCharacterData
+import com.example.rickandmortywiki.services.managers.CharactersManager
+import com.example.rickandmortywiki.services.mockData.MockCharacterData
 import com.example.rickandmortywiki.views.cardListScreen.CharacterListScreen
 import com.example.rickandmortywiki.views.cardListScreen.EpisodeListScreen
 import com.example.rickandmortywiki.views.cardListScreen.LocationListScreen
@@ -45,7 +47,10 @@ fun BottomMenuBar(navController: NavHostController, scrollState: ScrollState) {
 }
 
 @Composable
-fun Navigation(navHostController: NavHostController, scrollState: ScrollState) {
+fun Navigation(navHostController: NavHostController, scrollState: ScrollState, charactersManager: CharactersManager = CharactersManager()) {
+    val characters = charactersManager.charactersResponse.value.info?.pages
+    Log.d("pages of Characters", "$characters, ")
+
 
     NavHost(navController = navHostController, startDestination = "CharacterListScreen") {
         bottomNavigation(navController = navHostController)

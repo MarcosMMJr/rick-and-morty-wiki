@@ -14,12 +14,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rickandmortywiki.services.mockData.MockCharacterData
+import com.example.rickandmortywiki.services.mockData.MockLocationData
+import com.example.rickandmortywiki.services.models.LocationModelResponse
 import com.example.rickandmortywiki.ui.theme.DarkBlue20
 import com.example.rickandmortywiki.ui.theme.LightBlue40
 import com.example.rickandmortywiki.views.cards.CharacterCard
+import com.example.rickandmortywiki.views.cards.EpisodeCard
+import com.example.rickandmortywiki.views.cards.LocationCard
 
 @Composable
-fun LocationListScreen(navController: NavController) {
+fun LocationListScreen(navController: NavController, locations: List<LocationModelResponse>) {
     Surface(color = DarkBlue20) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -32,13 +36,15 @@ fun LocationListScreen(navController: NavController) {
                 color = LightBlue40,
             )
 
-//            LazyColumn {
-//                items(MockCharacterData.charactersList) { characterData ->
-//                    CharacterCard(characterData = characterData, onCharacterCardClick = {
-//                        navController.navigate("CharacterDetailsScreen/${characterData.id}")
-//                    })
-//                }
-//            }
+            LazyColumn {
+                items(locations.size) { index ->
+                    LocationCard(
+                        locationData = locations[index],
+                        onLocationCardClick = { navController.navigate("LocationDetailsScreen/$index") }
+                    )
+                }
+            }
+
         }
     }
 }
@@ -47,5 +53,5 @@ fun LocationListScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun LocationListScreenPreview() {
-    LocationListScreen(rememberNavController())
+    LocationListScreen(rememberNavController(), MockLocationData.locationsList)
 }

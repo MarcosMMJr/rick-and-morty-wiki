@@ -118,12 +118,12 @@ fun EpisodeDescriptionItem(title: String, description: String) {
 }
 
 @Composable
-fun CharactersApparitionItem() {
+fun CharactersApparitionItem(title: String) {
     Column {
         Box(modifier = Modifier.padding(start = 16.dp)) {
 
             Text(
-                text = "Characters in this episode",
+                text = title,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = LightBlue40
@@ -193,6 +193,7 @@ fun EpisodeStructureItem(episodeNumber: String) {
 @Composable
 fun EpisodeDetailsBottomHalf(episodeData: EpisodeModelResponse) {
     Column {
+        Spacer(modifier = Modifier.height(15.dp))
 
         episodeData.airDate?.let {
             EpisodeDescriptionItem(
@@ -207,7 +208,7 @@ fun EpisodeDetailsBottomHalf(episodeData: EpisodeModelResponse) {
             )
         }
 
-        CharactersApparitionItem()
+        CharactersApparitionItem("Characters in this episode")
     }
 }
 

@@ -42,7 +42,6 @@ fun EpisodeListScreen(navController: NavController, episodes: List<EpisodeModelR
                         onEpisodeCardClick = { navController.navigate("EpisodeDetailsScreen/$index") }
                     )
                 }
-
             }
 
         }

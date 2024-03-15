@@ -21,7 +21,12 @@ import com.example.rickandmortywiki.ui.theme.LightBlue40
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopMenuBar(onBackPressed: () -> Unit = {}) {
+fun TopMenuBar(
+    title: String,
+    onBackPressed: () -> Unit = {},
+    isSearchOn: Boolean = false,
+    isFliterOn: Boolean = false,
+) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -29,7 +34,7 @@ fun TopMenuBar(onBackPressed: () -> Unit = {}) {
     ) {
         TopAppBar(title = {
             Text(
-                text = "Character Details",
+                text = title,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
@@ -46,5 +51,16 @@ fun TopMenuBar(onBackPressed: () -> Unit = {}) {
 
         }, colors = TopAppBarDefaults.topAppBarColors(DarkBlue20))
     }
+
+}
+
+@Composable
+fun FilterItem(category: String, isSelected: Boolean = false, onFetchCategory: (String) -> Unit) {
+
+}
+
+@Composable
+fun FilterMenu() {
+
 
 }

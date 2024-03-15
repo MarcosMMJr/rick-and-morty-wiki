@@ -45,7 +45,7 @@ fun CharacterDetailsScreen(
     characterData: CharacterModelResponse
 ) {
     Scaffold(topBar = {
-        TopMenuBar {
+        TopMenuBar(title = "Character Details") {
             navController.popBackStack()
         }
     }) { padding ->

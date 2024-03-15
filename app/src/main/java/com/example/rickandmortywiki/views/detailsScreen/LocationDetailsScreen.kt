@@ -47,7 +47,7 @@ fun LocationDetailsScreen(
     locationData: LocationModelResponse
 ) {
     Scaffold(topBar = {
-        TopMenuBar {
+        TopMenuBar(title = "Location Details") {
             navController.popBackStack()
         }
     }) { padding ->

@@ -21,6 +21,7 @@ import com.example.rickandmortywiki.views.cards.CharacterCard
 
 @Composable
 fun CharacterListScreen(navController: NavController, characters: List<CharacterModelResponse>) {
+
     Surface(color = DarkBlue20) {
         Column(
             modifier = Modifier.fillMaxSize(),

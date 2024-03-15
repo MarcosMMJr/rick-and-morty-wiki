@@ -45,7 +45,7 @@ fun EpisodeDetailsScreen(
     episodeData: EpisodeModelResponse
 ) {
     Scaffold(topBar = {
-        TopMenuBar {
+        TopMenuBar(title = "Episode Details") {
             navController.popBackStack()
         }
     }) { padding ->

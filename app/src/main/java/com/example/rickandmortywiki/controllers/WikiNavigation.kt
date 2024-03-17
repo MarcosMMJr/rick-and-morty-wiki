@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -69,7 +70,7 @@ fun Navigation(
     Log.d("pages of Episodes", "$episodesData \n\n")
     Log.d("pages of Locations", "$locationsData \n\n")
 
-    charactersData?.let {
+    charactersData?.let {characters ->
         episodesData?.let {
             locationsData?.let {
                 NavHost(
@@ -85,19 +86,24 @@ fun Navigation(
                     )
 
                     composable(
-                        "CharacterDetailsScreen/{index}",
-                        arguments = listOf(navArgument("index") { type = NavType.IntType })
+                        "CharacterDetailsScreen/{characterId}",
+                        arguments = listOf(navArgument("characterId") { type = NavType.IntType })
                     ) { navBackStackEntry ->
-                        val characterIndex = navBackStackEntry.arguments?.getInt("index")
-                        characterIndex?.let {
-                            val characterData = charactersData[characterIndex]
-                            CharacterDetailsScreen(
-                                navController = navHostController,
-                                scrollState = scrollState,
-                                characterData = characterData
-                            )
+                        val characterId = navBackStackEntry.arguments?.getInt("characterId")
+                        characterId?.let {
+                            val characterData = charactersData.find { it.id == characterId }
+                            characterData?.let {
+                                CharacterDetailsScreen(
+                                    navController = navHostController,
+                                    scrollState = scrollState,
+                                    characterData = it
+                                )
+                            }
                         }
                     }
+
+
+
 
                     composable(
                         "EpisodeDetailsScreen/{index}",
@@ -145,9 +151,10 @@ fun NavGraphBuilder.bottomNavigation(
 
     }
     composable(BottomMenuNavigation.CharacterListScreen.route) {
-        CharacterListScreen(navController = navController, characters = characters)
-
+        CharacterListScreen(navController = navController, charactersManager = CharactersManager())
     }
+
+
     composable(BottomMenuNavigation.LocationListScreen.route) {
         LocationListScreen(navController = navController, locations = locations)
     }

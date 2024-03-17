@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.example.rickandmortywiki.services.Api
+import com.example.rickandmortywiki.services.models.CharacterModelResponse
 import com.example.rickandmortywiki.services.responses.CharactersResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,6 +14,7 @@ import retrofit2.Response
 
 class CharactersManager {
     private val _charactersResponse = mutableStateOf(CharactersResponse())
+    private var currentPage = 1
 
     val charactersResponse: State<CharactersResponse>
         @Composable get() = remember {
@@ -20,11 +22,18 @@ class CharactersManager {
         }
 
     init {
-        getCharacters()
+        getCharacters(
+            currentPage = currentPage
+        ) { newCharacters ->
+            _charactersResponse.value = _charactersResponse.value.copy(results = newCharacters)
+        }
     }
 
-    private fun getCharacters() {
-        val service = Api.characterService.getCharacters()
+    private fun getCharacters(
+        currentPage: Int,
+        onNewCharactersFetched: (List<CharacterModelResponse>) -> Unit
+    ) {
+        val service = Api.characterService.getCharacters(pageIndex = this.currentPage)
         service.enqueue(object : Callback<CharactersResponse> {
 
             override fun onResponse(
@@ -32,7 +41,10 @@ class CharactersManager {
                 response: Response<CharactersResponse>
             ) {
                 if (response.isSuccessful) {
-                    _charactersResponse.value = response.body()!!
+                    val newCharacters = response.body()!!.results
+                    if (newCharacters != null) {
+                        onNewCharactersFetched(newCharacters)
+                    }
                     Log.d("Characters", "Success: ${_charactersResponse.value}")
                 } else {
                     Log.d("CharactersManagerError", "Error: ${response.errorBody()}")
@@ -44,4 +56,13 @@ class CharactersManager {
             }
         })
     }
+
+    fun fetchNextPage() {
+        currentPage++
+        getCharacters(currentPage) { newCharacters ->
+            val updatedList = _charactersResponse.value.results?.plus(newCharacters) ?: newCharacters
+            _charactersResponse.value = _charactersResponse.value.copy(results = updatedList)
+        }
+    }
+
 }

@@ -6,4 +6,8 @@ import com.example.rickandmortywiki.services.models.components.InfoResponse
 data class CharactersResponse(
     val info: InfoResponse? = null,
     val results: List<CharacterModelResponse>? = null
-)
+) {
+    operator fun plus(newCharacters: List<CharacterModelResponse>?) {
+        results?.plus(newCharacters)
+    }
+}

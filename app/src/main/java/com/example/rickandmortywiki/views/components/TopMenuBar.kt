@@ -24,8 +24,8 @@ import com.example.rickandmortywiki.ui.theme.LightBlue40
 fun TopMenuBar(
     title: String,
     onBackPressed: () -> Unit = {},
-    isSearchOn: Boolean = false,
-    isFliterOn: Boolean = false,
+//    isSearchOn: Boolean = false,
+//    isFliterOn: Boolean = false,
 ) {
 
     Surface(
